@@ -1,0 +1,26 @@
+name: Keystore Check Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_keystore:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Find Keystore File
+      run: |
+        keystore_path=$(find . -name "*.keystore" -o -name "*.jks" -print -quit)
+        echo "Keystore file found at: $keystore_path"
+
+    - name: Check Keystore Details
+      if: ${{ env.keystore_path != '' }}
+      run: keytool -list -v -keystore ${{ env.keystore_path }}
+      
+    env:
+      keystore_path: ${{ keystore_path }}
