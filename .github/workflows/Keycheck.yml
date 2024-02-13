@@ -1,9 +1,11 @@
 name: Keystore Check Workflow
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
+concurrency: 
+  group: "release"
+  cancel-in-progress: true
 
 jobs:
   check_keystore:
